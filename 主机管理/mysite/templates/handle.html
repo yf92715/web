@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .color{
+            color:#404040
+        }
+        .h1{
+            display:none
+        }
+        .h2{
+            display:none
+        }
+        .hide{
+            display:none
+        }
+    </style>
+</head>
+<body>
+    <div class="h1" style="position:fixed;left:0;top:0;right:0;bottom:0;background-color:#e4d1d1;z-index:2;opacity:0.7">
+        <div style="position:fixed;left:30%;top:30%;background-color:#4e4b4b;height:200px;width:400px;">
+            <form action="/handle" method="post" style="padding-top:50px;">
+                <input class="color" type="text" name="hostname" placeholder="主机名" />
+                <input class="color" type="text" name="task" placeholder="任务" />
+                <input class="color" style="margin-top:20px;" type="submit" value="确定" />
+                <button class="color" id="cancle" type="button">取消</button>
+            </form>
+        </div>
+    </div>
+    <div class="h2" style="position:fixed;left:0;top:0;right:0;bottom:0;background-color:#e4d1d1;z-index:2;opacity:0.7">
+        <div style="position:fixed;left:30%;top:30%;background-color:#4e4b4b;height:200px;width:400px;">
+            <form id="form2" action="/edit-" method="post" style="padding-top:50px;">
+                <input class="color" type="text" name="hostname" placeholder="主机名" />
+                <input class="color" type="text" name="task" placeholder="任务" />
+                <input class="color" style="margin-top:20px;" type="submit" value="确定" />
+                <button class="color" id="cancle02" type="button">取消</button>
+            </form>
+        </div>
+    </div>
+    <div style="position:absolute;left:0;right:0;top:0;height:50px;background-color:#9ba6e0;line-height:50px;padding-left:20px;z-index:1;"><a href="/enter">返回登录界面</a></div>
+    <div>
+        <div style="position:absolute;top:50px;left:0;bottom:0;width:200px;background-color:#FFE1FF">
+            <p>
+                <a id="manage" style="padding-left:20px;" href="">主机管理</a>
+            </p>
+        </div>
+        <div style="position:absolute;top:50px;left:201px;right:0;bottom:0;background-color:#FFF8DC">
+            <p style="padding-left:20px;">
+                <input class="add" type="button" value="增加主机">
+            </p>
+            <h3>主机列表</h3>
+            <ul>
+                {% for item in host_list %}
+                    <li><a href="">{{item.hostname}}</a>|
+                        <a href="/host_detail-{{item.id}}">查看详细</a>|
+                        <a class="confirm" href="/host_del-{{item.id}}">删除</a>|
+                        <input class="change" id={{item.id}} type="button" value="修改">
+                        <input class="hide" value={{item.id}}>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script src="static/jquery-1.12.4.js"></script>
+    <script>
+        $('.add').click(function(){
+            $('.h1').show()
+        })
+        $('#cancle').click(function(){
+            $('.h1').hide()
+        })
+        $('.change').click(function(){
+            action = $('#form2')[0].action
+            var target =  $('#form2')[0].action + $(this)[0].id
+            $('#form2')[0].action = target
+            console.log(target)
+            $('.h2').show()
+        })
+        $('#cancle02').click(function(){
+            $('#form2')[0].action = action
+            console.log($('#form2')[0].action)
+            $('.h2').hide()
+        })
+        $('.confirm').click(function(){
+            if(confirm('确认删除吗？')){
+                return true;
+            }
+            return false;
+        })
+    </script>
+</body>
+</html>
